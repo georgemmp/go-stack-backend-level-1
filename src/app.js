@@ -8,6 +8,20 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+function logRequests(request, response, next) {
+	const { method, url } = request;
+
+	const log = `[${method}] - ${url}`;
+
+	console.time(log);
+
+	next();
+
+	console.timeEnd(log);
+}
+
+app.use(logRequests);
+
 const repositories = [];
 
 app.get("/repositories", (request, response) => {
@@ -15,7 +29,9 @@ app.get("/repositories", (request, response) => {
 });
 
 app.post("/repositories", (request, response) => {
-	// TODO
+	repositories.push({ ...request.body, likes: 0 });
+
+	return response.status(201).json(repositories);
 });
 
 app.put("/repositories/:id", (request, response) => {
