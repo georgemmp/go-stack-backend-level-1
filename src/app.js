@@ -32,8 +32,8 @@ function checkId(request, response, next) {
 	return next();
 }
 
-// app.use(logRequests);
-// app.use("/repositories/:id", checkId);
+app.use(logRequests);
+app.use("/repositories/:id", checkId);
 
 const repositories = [];
 
